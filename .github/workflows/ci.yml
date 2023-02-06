@@ -1,0 +1,67 @@
+name: Build & Test
+
+on:
+  push:
+    branches: ["master"]
+    # paths-ignore:
+    #   - "docs/**"
+    #   - "**/*.md"
+
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  build:
+    name: Build and Test
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    # To use Remote Caching, uncomment the next lines and follow the steps below.
+    env:
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+
+      - uses: pnpm/action-setup@v2.0.1
+        with:
+          version: 7.13.6
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Unit Tests
+        run: pnpm test
+
+      - name: Build
+        run: pnpm docker:build
+
+      - name: Run
+        run: pnpm docker:up
+
+      - name: 🌐 Install Playwright Browsers
+        run: pnpm playwright:install
+
+      - name: Wait for server to be ready
+        uses: iFaxity/wait-on-action@v1
+        with:
+          resource: http://localhost:3000
+
+      - name: Run e2e tests
+        run: pnpm test:e2e
+
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30

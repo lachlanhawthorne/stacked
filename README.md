@@ -1,73 +1,224 @@
-# Turborepo starter
+# keystone-t3
 
-This is an official pnpm starter turborepo.
+A monorepo built for rapid full stack web development using KeystoneJS and tRPC. This repository contains a CMS, UI component library and end-to-end tests. The packages are organized by their functionalities and can be developed and tested independently.
 
-## What's inside?
+- `cms`: KeystoneJS CMS
+- `app`: Screens with data fetching with UI components
+- `ui`: UI library with twin.macro and stitches
+- `e2e`: End-to-end tests using Playwright
 
-This turborepo uses [pnpm](https://pnpm.io) as a package manager. It includes the following packages/apps:
+The monorepo also includes client applications
+- `next-app`: Next.js web application
+- `astro-app`: Astro web application
+- `remix-app`: Remix web application
+- `qwick-app`: Qwick web application
+- `vite-app`: Vite web application
 
-### Apps and Packages
+## 📦 Installation
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `ui`: a stub React component library shared by both `web` and `docs` applications
-- `eslint-config-custom`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `tsconfig`: `tsconfig.json`s used throughout the monorepo
+Install all packages and dependencies using:
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-```
-cd my-turborepo
-pnpm run build
+```bash
+git clone https://github.com/lachlanhawthorne/keystone-t3.git
+pnpm
 ```
 
-### Develop
+## 🛠 Development
 
-To develop all apps and packages, run the following command:
+You can run all apps and packages simultaneously from the root directory or individually using:
 
+```bash
+pnpm dev
 ```
-cd my-turborepo
-pnpm run dev
-```
+```bash
+pnpm cms:dev
+pnpm ui:dev
 
-### Remote Caching
-
-Turborepo can use a technique known as [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup), then enter the following commands:
-
-```
-cd my-turborepo
-pnpm dlx turbo login
+pnpm astro-app:dev
+pnpm next-app:dev
+pnpm remix-app:dev
+pnpm qwick-app:dev
+pnpm vite-app:dev
 ```
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+### Adding UI Components
 
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your turborepo:
+You can quickly generate new components with Storybook stories and tests using: 
 
+```bash
+pnpm ui:new
 ```
-pnpm dlx turbo link
+
+For more information on generating styled components, follow the guidelines outlined in the [twin.macro documentation](https://github.com/ben-rogerson/twin.macro#styled-components).
+
+### Using Tanstack Router
+
+Client applications such as Astro, Qwick and Vite do not come with a router by default. The `app` package uses `@tanstack/router` routes to navigate between pages, fetch data. To use the router, add the following to your application:
+
+```typescript
+import { RouterProvider } from '@tanstack/router';
+
+export default function App({ Component, pageProps }) {
+  return (
+    <RouterProvider>
+      <Component {...pageProps} />
+    </RouterProvider>
+  );
+}
 ```
 
-## Useful Links
+## 📖 Storybook
 
-Learn more about the power of Turborepo:
+The `ui` package is configured to use [Storybook](https://storybook.js.org/) for component development. You can run Storybook using:
 
-- [Pipelines](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
-- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
-- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
-- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
-- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
-- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
+```bash
+pnpm storybook:dev
+```
+
+## 📡 Data Fetching
+
+The `e2e` package contains an adapter create a tRPC server and client using KeystoneJS. This allows you to use KeystoneJS as a data source for your tRPC API.
+
+To link a new KeystoneJS project to the tRPC server, add the following to your KeystoneJS `schema.ts` file:
+
+```typescript
+import { KeystoneContext } from '@keystone-next/types';
+import { createKeystoneAdapter } from '@keystone-next-trpc-twin.macro/e2e';
+
+export const keystone = new Keystone({
+  adapter: createKeystoneAdapter({
+    context: KeystoneContext,
+    schemaName: 'public',
+  }),
+});
+```
+
+To link a new Next.js project to the tRPC client, add the following to your Next.js `pages/api/trpc/[trpc].ts` file:
+
+```typescript
+import { createNextApiHandler } from '@keystone-next-trpc-twin.macro/e2e';
+
+export default createNextApiHandler();
+```
+
+### Creating Routes
+
+To create a new tRPC route, add a new file to the `e2e/routes` directory. The file should export a function that returns a tRPC route. For example:
+
+```typescript
+import { createRouter } from '@trpc/server';
+import { createContext } from '@keystone-next-trpc-twin.macro/e2e';
+
+export const createRoutes = () =>
+  createRouter()
+    .query('hello', {
+      resolve() {
+        return 'Hello World!';
+      },
+    })
+    .mutation('createUser', {
+      input: z.object({
+        name: z.string(),
+      }),
+      resolve({ input }) {
+        return createContext().db.user.create({
+          data: {
+            name: input.name,
+          },
+        });
+      },
+    });
+```
+
+### Using Routes
+
+To use a tRPC route, import the `useQuery` or `useMutation` hook from `@trpc/react` and pass the route name as the first argument. For example:
+
+```typescript
+import { useQuery, useMutation } from '@trpc/react';
+
+const { data } = useQuery('hello');
+const [createUser] = useMutation('createUser');
+```
+
+
+## 🌐 Accessibility and Internationalization
+
+## 🔐 Security
+
+To add access control to a tRPC route, add a `middleware` function to the route. For example:
+
+```typescript
+import { createRouter } from '@trpc/server';
+import { createContext } from '@keystone-next-trpc-twin.macro/e2e';
+
+export const createRoutes = () =>
+  createRouter()
+    .query('hello', {
+      resolve() {
+        return 'Hello World!';
+      },
+    })
+    .mutation('updateUser', {
+      input: z.object({
+        id: z.string(),
+        name: z.string(),
+      }),
+      resolve({ input }) {
+        return createContext().db.user.update({
+          where: {
+            id: input.id,
+          },
+          data: {
+            name: input.name,
+          },
+        });
+      },
+    }
+    .middleware(async ({ ctx, next }) => {
+      if (!ctx.session?.data?.userId) {
+        throw new Error('Not authenticated');
+      }
+
+      return next();
+    });
+```
+
+## 📊 SEO and Analytics
+
+## 🧪 Testing
+You tests for all apps and packages  simultaneously or individually using:
+
+```bash
+pnpm test
+```
+```bash
+pnpm cms:test
+pnpm web:test
+pnpm ui:test
+pnpm e2e:test
+```
+
+## 🚀 Deployment
+
+To build a production version of the `cms` or `web` application, navigate to the respective directory and run `pnpm build`. This will build the application and output the files to the `build` directory. You can build all apps and packages using:
+
+```bash
+pnpm build
+```
+
+Refer to the [KeystoneJS documentation](https://www.keystonejs.com/guides/deployment) and the [NextJS documentation](https://nextjs.org/docs/deployment) for further deployment instructions.
+
+## 🚦 GitHub CI
+
+This repository is configured to use GitHub CI for continuous integration. Any changes pushed to the `master` branch will trigger a build and test run.
+
+Any changes to the UI package will trigger 
+
+## 📚 Resources
+* [KeystoneJS](https://www.keystonejs.com/)
+* [tRPC](https://github.com/trpc/trpc)
+* [twin.macro](https://github.com/ben-rogerson/twin.macro)
+* [Tailwind](https://tailwindcss.com/)
+* [Playwright](https://github.com/microsoft/playwright)
+

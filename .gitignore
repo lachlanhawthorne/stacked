@@ -9,9 +9,13 @@ node_modules
 coverage
 
 # next.js
-.next/
-out/
+.next
+out
 build
+dist
+
+# keystone
+.keystone
 
 # misc
 .DS_Store
@@ -31,3 +35,13 @@ yarn-error.log*
 
 # turbo
 .turbo
+
+# eslint
+.eslintcache
+
+# playwright
+**/playwright-report/**/*
+**/test-results/**/*
+**/test-report/**/*
+**/playwright-report/**/*
+**/playwright/.cache/**/*
