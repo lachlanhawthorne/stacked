@@ -37,8 +37,8 @@
   },
   "packageManager": "pnpm@7.21.0",
   "dependencies": {
-    "app": "workspace:*",
-    "cms": "workspace:*",
-    "ui": "workspace:*"
+    "app": "*",
+    "cms": "*",
+    "ui": "*"
   }
 }

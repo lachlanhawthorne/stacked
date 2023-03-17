@@ -4,8 +4,7 @@
   "scripts": {
     "dev": "keystone dev",
     "start": "keystone start",
-    "build": "keystone build",
-    "postinstall": "keystone postinstall"
+    "build": "keystone build"
   },
   "dependencies": {
     "@keystone-6/auth": "^5.0.0",
@@ -17,6 +16,7 @@
     "@keystone-ui/icons": "^6.0.2",
     "@keystone-ui/tooltip": "^6.0.2",
     "@prisma/client": "^4.8.1",
+    "@prisma/engines": "^4.11.0",
     "@trpc/client": "^10.0.0",
     "@trpc/next": "^10.0.0",
     "@trpc/react-query": "^10.0.0",

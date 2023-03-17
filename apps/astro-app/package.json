@@ -21,14 +21,14 @@
     "@tanstack/react-router": "0.0.1-beta.62",
     "@tanstack/react-router-devtools": "0.0.1-beta.62",
     "@tanstack/router": "0.0.1-beta.62",
-    "app": "workspace:*",
+    "app": "*",
     "astro": "^2.0.2",
     "concurrently": "^7.6.0",
     "nanostores": "^0.7.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-syntax-highlighter": "^15.5.0",
-    "ui": "workspace:*"
+    "ui": "*"
   },
   "devDependencies": {
     "@types/react": "^18.0.26",
