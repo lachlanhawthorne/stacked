@@ -1,0 +1,9 @@
+import React from 'react';
+import { render } from '@testing-library/react';
+import {{pascalCase name}} from './{{pascalCase name}}';
+
+test('renders {{pascalCase name}} component', () => {
+  const { getByText } = render(<{{pascalCase name}} />);
+  const componentText = getByText('{{pascalCase name}} component');
+  expect(componentText).toBeInTheDocument();
+});

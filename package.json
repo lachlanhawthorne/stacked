@@ -22,10 +22,13 @@
     "build": "turbo run build",
     "dev": "turbo run dev --parallel",
     "lint": "turbo run lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "ui:new": "plop --plopfile ./templates/plopfile.js ui-component",
+    "storybook:dev": "pnpm -r --filter ui run storybook"
   },
   "devDependencies": {
     "eslint-config-custom": "workspace:*",
+    "plop": "^3.1.2",
     "prettier": "latest",
     "turbo": "latest"
   },

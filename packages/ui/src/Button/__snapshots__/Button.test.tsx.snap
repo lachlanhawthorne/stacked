@@ -1,0 +1,9 @@
+// Vitest Snapshot v1
+
+exports[`<Button/> > the title is visible 1`] = `
+<button
+  className="c-cuAKdo"
+>
+  hello
+</button>
+`;

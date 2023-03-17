@@ -5,6 +5,8 @@ import { BsChevronRight } from "react-icons/bs"
 import { FiArrowLeft } from "react-icons/fi"
 
 import { DocumentRenderer } from "@keystone-6/document-renderer"
+import { LinkComponentProxy } from "app/src/stores/components"
+import { useStore } from '@nanostores/react'
 
 type Post = CmsAppRouterOutputs["blog"]["post"]
 
@@ -69,13 +71,18 @@ const BreadcrumbStyledLink = tw.a`
   // line-clamp-1
 `
 
-const BreadcrumbLink = ({href, title, linkComponent: LinkComponent}: {href: string, title: string, linkComponent: React.ComponentType<{ href: string; children: React.ReactNode; }>}) => (
-  <LinkComponent to={href}>
-    <BreadcrumbStyledLink>
-      {title}
-    </BreadcrumbStyledLink>
-  </LinkComponent>
-)
+const BreadcrumbLink = ({href, title}: {href: string, title: string,}) => {
+  const linkComponentProxy = useStore(LinkComponentProxy)
+  const LinkComponent = linkComponentProxy.component
+
+  return (
+    <LinkComponent to={href}>
+      <BreadcrumbStyledLink>
+        {title}
+      </BreadcrumbStyledLink>
+    </LinkComponent>
+  )
+}
 
 const BreadcrumbSeparator = tw.div`
   flex
@@ -88,9 +95,7 @@ export type PostProps = {
   title?: string
   repoUrl?: string
   post: Post
-  linkComponent: React.ComponentType<{ href: string; children: React.ReactNode; }>
 }
-
 
 const stringToSlate = (str: string) =>
     JSON.parse(str) as unknown as Parameters<
@@ -102,7 +107,7 @@ const DocumentContainer = tw.div`
   leading-relaxed
 `
 
-export function Post({ title, repoUrl, post, linkComponent: LinkComponent }: PostProps) {
+export function Post({ title, repoUrl, post }: PostProps) {
 
   const slate = stringToSlate(post?.content as string)
   
@@ -111,7 +116,7 @@ export function Post({ title, repoUrl, post, linkComponent: LinkComponent }: Pos
       <Breadcrumbs>
         <Breadcrumb>
           <FiArrowLeft size="1rem"  />
-          <BreadcrumbLink href="/posts" title="All Posts" linkComponent={LinkComponent} />
+          <BreadcrumbLink href="/posts" title="All Posts" />
         </Breadcrumb>
       </Breadcrumbs>
 

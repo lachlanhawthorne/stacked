@@ -2,7 +2,12 @@
   "name": "ui",
   "private": true,
   "version": "0.0.0",
+  "module": "src/index.tsx",
   "main": "dist/ui.mjs",
+  "typings": "dist/src/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "dev": "vite build --watch",
     "dev:ladle": "ladle serve",
@@ -15,10 +20,13 @@
     "build:storybook": "build-storybook"
   },
   "dependencies": {
+    "@nanostores/react": "^0.4.1",
     "@stitches/react": "^1.2.8",
     "marked-react": "^1.3.2",
+    "nanostores": "^0.7.3",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-syntax-highlighter": "^15.5.0"
   },
   "devDependencies": {
     "@keystone-6/document-renderer": "^1.1.2",
@@ -39,16 +47,24 @@
     "@storybook/channel-websocket": "^6.5.16",
     "@storybook/client-api": "^6.5.16",
     "@storybook/client-logger": "^6.5.16",
+    "@storybook/jest": "^0.0.10",
     "@storybook/preview-web": "^6.5.16",
     "@storybook/react": "^6.5.16",
+    "@storybook/test-runner": "^0.9.4",
     "@storybook/testing-library": "^0.0.13",
+    "@storybook/testing-react": "^1.3.0",
+    "@testing-library/react": "^13.4.0",
     "@types/react": "^18.0.24",
     "@types/react-dom": "^18.0.8",
+    "@types/react-syntax-highlighter": "^15.5.6",
+    "@types/react-test-renderer": "^18.0.0",
     "@typescript-eslint/eslint-plugin": "^5.42.0",
     "@typescript-eslint/parser": "^5.42.0",
     "@vitejs/plugin-react": "^2.2.0",
     "autoprefixer": "^10.4.13",
+    "axe-playwright": "^1.2.3",
     "babel-plugin-macros": "^3.1.0",
+    "concurrently": "^7.6.0",
     "eslint": "^8.26.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-typescript": "^17.0.0",
@@ -59,16 +75,21 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.31.10",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "happy-dom": "^8.4.0",
     "prettier": "^2.7.1",
-    "prismjs": "^1.29.0",
     "react-icons": "^4.7.1",
+    "react-test-renderer": "^18.2.0",
     "storybook-dark-mode": "^2.0.5",
     "storybook-mobile": "^1.0.0",
     "tailwindcss": "^3.2.1",
+    "tsup": "^6.6.3",
     "twin.macro": "^2.8.2",
     "typescript": "^4.8.4",
-    "vite": "^3.2.2",
+    "vite": "^4.1.1",
+    "vite-dts": "^1.0.4",
     "vite-plugin-babel-macros": "^1.0.6",
-    "vite-tsconfig-paths": "^3.5.2"
+    "vite-plugin-windicss": "^1.8.10",
+    "vite-tsconfig-paths": "^3.5.2",
+    "vitest": "^0.28.5"
   }
 }

@@ -6,6 +6,7 @@ const macrosPlugin = require("vite-plugin-babel-macros");
 module.exports = {
   features: {
     babelModeV7: true, //https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#babel-mode-v7
+    // interactionsDebugger: true, // 👈 Enable playback controls
   },
   stories: ['../src/**/*.stories.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx)'],
   /** Expose public folder to storybook as static */
@@ -14,6 +15,7 @@ module.exports = {
     '@storybook/addon-a11y',
     '@storybook/addon-links',
     '@storybook/addon-essentials',
+    // '@storybook/addon-interactions',
     'storybook-dark-mode',
     'storybook-mobile',
     {

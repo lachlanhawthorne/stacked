@@ -10,7 +10,7 @@ export const blogRouter = t.router({
       skip: input.page ? (input.page - 1) * 1 : 0,
       take: 1,
     }))
-    return data.map((post) => {
+    return data?.map((post) => {
       return {
         ...post,
         preview: JSON.parse(post.content)[0] 
@@ -49,7 +49,7 @@ export const blogRouter = t.router({
       }
     });
     
-    return data.map((post) => {
+    return data?.map((post) => {
       return {
         title: post.title,
         slug: post.id

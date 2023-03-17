@@ -8,11 +8,8 @@ A monorepo built for rapid full stack web development using KeystoneJS and tRPC.
 - `e2e`: End-to-end tests using Playwright
 
 The monorepo also includes client applications
-- `next-app`: Next.js web application
 - `astro-app`: Astro web application
-- `remix-app`: Remix web application
-- `qwick-app`: Qwick web application
-- `vite-app`: Vite web application
+- `next-app`: Next.js web application
 
 ## 📦 Installation
 
@@ -50,22 +47,6 @@ pnpm ui:new
 ```
 
 For more information on generating styled components, follow the guidelines outlined in the [twin.macro documentation](https://github.com/ben-rogerson/twin.macro#styled-components).
-
-### Using Tanstack Router
-
-Client applications such as Astro, Qwick and Vite do not come with a router by default. The `app` package uses `@tanstack/router` routes to navigate between pages, fetch data. To use the router, add the following to your application:
-
-```typescript
-import { RouterProvider } from '@tanstack/router';
-
-export default function App({ Component, pageProps }) {
-  return (
-    <RouterProvider>
-      <Component {...pageProps} />
-    </RouterProvider>
-  );
-}
-```
 
 ## 📖 Storybook
 

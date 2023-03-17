@@ -1,4 +1,3 @@
-import { useEffect } from "react"
 import tw from "twin.macro"
 
 const Container = tw.div`
@@ -27,6 +26,9 @@ export type ScreenProps = {
 
 
 export function Screen({ children }: ScreenProps) {
+  // const snapshot = useProxy(linkComponentState)
+  // console.log('snapshot', snapshot)
+  
   return (
     <Container>
       <Content>

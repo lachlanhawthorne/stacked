@@ -1,6 +1,6 @@
 import tw from 'twin.macro'
 import MarkedReact from 'marked-react'
-// import { CodeBlock } from 'ui'
+import { CodeBlock } from '../Code/Code'
 
 const MarkdownContainer = tw.div`
   space-y-6
@@ -20,12 +20,13 @@ export const Markdown = ({ content, linkComponent : LinkComponent }: any) => {
           //       <></>
           //     )
           // },
+          
           heading(children, level) {
             switch (level) {
               case 1:
-                break;
+                return <></>
               case 2:
-                return <h2 tw="text-2xl font-bold">{children}</h2>
+                return <h2 tw="text-2xl font-bold" style={{ wordSpacing: '0.1rem' }}>{children}</h2>
               case 3:
                 return <h3 tw="text-xl font-bold">{children}</h3>
               case 4:
@@ -38,14 +39,14 @@ export const Markdown = ({ content, linkComponent : LinkComponent }: any) => {
                 return <h1 tw="text-3xl font-bold">{children}</h1>
             }
           },
-          // code(code, language) {
-          //   return (
-          //     <CodeBlock 
-          //       language={language}
-          //       code={code}
-          //     />
-          //   )
-          // },
+          code(code, language) {
+            return (
+              <CodeBlock 
+                language={language}
+                code={code}
+              />
+            )
+          },
           codespan(code, lang) {
             return (
               <code style={{
@@ -55,6 +56,9 @@ export const Markdown = ({ content, linkComponent : LinkComponent }: any) => {
                 '{code}'
               </code>
             )
+          },
+          paragraph(children) {
+            return <p tw="text-base">{children}</p>
           },
         }}
       />

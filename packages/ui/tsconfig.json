@@ -1,23 +1,27 @@
 {
   "compilerOptions": {
-    "target": "es6",
-    "baseUrl": "src",
+    "target": "ESNext",
     "useDefineForClassFields": true,
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": ["DOM", "ES2015"],
     "allowJs": false,
+    "types": [
+      "vite/client",
+      "vitest/globals"
+    ],
     "skipLibCheck": true,
     "esModuleInterop": false,
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "module": "esnext",
-    "moduleResolution": "node",
+    "module": "ESNext",
+    "moduleResolution": "Node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "react-jsx"
+    "emitDeclarationOnly": true,
+    "declarationDir": "./dist",
+    "jsx": "react-jsx",
+    "declaration": true
   },
-  "types": ["types"],
   "include": ["src", "types"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

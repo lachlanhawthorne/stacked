@@ -6,7 +6,7 @@ export * from './Markdown/Markdown'
 export * from './Code/Code'
 export * from './NProgress/NProgress'
 export * from './PostPreviews/PostPreviews'
-export * from './Page/Page'
+export * from './Document/Document'
 export * from './Post/Post'
 
 export { getCssText } from '../stitches.config';

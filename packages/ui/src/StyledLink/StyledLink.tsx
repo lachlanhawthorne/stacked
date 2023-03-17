@@ -1,10 +1,14 @@
 import tw from 'twin.macro'
+import { LinkComponentProxy } from 'app/src/stores/components'
+import { useStore } from '@nanostores/react'
 
-export const StyledLink: any = ({ href, children, linkComponent : LinkComponent }: { 
+export const StyledLink: any = ({ href, children }: { 
   href: string; 
   children: React.ReactNode;
-  linkComponent: React.ComponentType<{ href: string; children: React.ReactNode; }>
 }) => {
+  const linkComponentProxy = useStore(LinkComponentProxy)
+  const LinkComponent = linkComponentProxy.component
+
   return (
     <LinkComponent href={href}>
       <a 

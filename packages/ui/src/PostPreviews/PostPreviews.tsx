@@ -1,14 +1,17 @@
-import { useEffect, useState } from "react";
-import tw from "twin.macro";
-import { CmsAppRouterOutputs } from "cms/trpc/routes/index"
-import { DocumentRenderer } from "@keystone-6/document-renderer";
-import { RiCalendarLine, RiSearchLine } from "react-icons/ri"
-import React from "react";
+import { useEffect, useState } from 'react';
+import tw from 'twin.macro';
+import { CmsAppRouterOutputs } from 'cms/trpc/routes/index'
+import { DocumentRenderer } from '@keystone-6/document-renderer';
+import { RiCalendarLine, RiSearchLine } from 'react-icons/ri'
+import React from 'react';
+
+import { LinkComponentProxy } from 'app/src/stores/components'
+import { useStore } from '@nanostores/react'
 
 const stringToSlate = (str: string) =>
     JSON.parse(str) as unknown as Parameters<
       typeof DocumentRenderer
-    >["0"]["document"];
+    >['0']['document'];
 
 type Posts = CmsAppRouterOutputs['blog']['published']
 
@@ -102,7 +105,6 @@ const SearchInput = tw.input`
 
 export type PostPreviewsProps = {
   posts: Posts
-  linkComponent: React.ComponentType<{ href: string; children: React.ReactNode; }>
   pagination: {
     currentPage: number
     totalPages: number
@@ -127,7 +129,8 @@ export type PostPreviewsProps = {
 //   }
 // }
 
-export function PostPreviews({ pagination, posts, linkComponent: LinkComponent }: PostPreviewsProps) {
+
+export function PostPreviews({ pagination, posts }: PostPreviewsProps) {
   // const { searchQuery, setSearchQuery, filteredPosts } = getPostsStore(posts)
   // const [filteredPosts, setFilteredPosts] = useState(posts || [])
 
@@ -138,22 +141,26 @@ export function PostPreviews({ pagination, posts, linkComponent: LinkComponent }
   //   setFilteredPosts(filtered)
   // }, [searchQuery])
 
+  const linkComponentProxy = useStore(LinkComponentProxy)
+  const LinkComponent = linkComponentProxy.component
+
   return (
     <Container>
       <SearchBar>
         <RiSearchLine size='1.75rem' />
         <SearchInput 
-          type="search" 
-          placeholder="Search post titles..." 
+          type='search' 
+          placeholder='Search post titles...' 
           // onChange={(e) => setSearchQuery(e.target.value)}
         />
       </SearchBar>
+      
       {
-        posts?.map((post) => {
-          const date = post.publishDate?.toLocaleDateString('en-au', {
+        posts?.map((post: any) => {
+          const date = post?.publishDate?.toLocaleDateString('en-au', {
             day: 'numeric',
             month: 'short',
-            year: 'numeric'
+            // year: 'numeric'
           })
           return (
             <Post key={post.id}>
@@ -171,7 +178,7 @@ export function PostPreviews({ pagination, posts, linkComponent: LinkComponent }
                 </AttributeText>
               </PostAttributes>
               <LinkComponent to={`/posts/${post.id}`}>
-                <PostLink className="group">
+                <PostLink className='group'>
                   <Heading>
                     {post.title}
                   </Heading>
@@ -184,18 +191,18 @@ export function PostPreviews({ pagination, posts, linkComponent: LinkComponent }
       }
 
       {/* Pagination */}
-      <div tw="flex flex-row space-x-4">
+      {/* <div tw='flex flex-row space-x-4'>
         {pagination.currentPage > 1 && (
           <LinkComponent search={{ page: pagination.currentPage - 1}}>
-            <a tw="text-xl text-neutral-400 hover:text-neutral-300">Previous</a>
+            <a tw='text-xl text-neutral-400 hover:text-neutral-300'>Previous</a>
           </LinkComponent>
         )}
         {pagination.currentPage < pagination.totalPages && (
           <LinkComponent search={{ page: pagination.currentPage + 1}}>
-            <a tw="text-xl text-neutral-400 hover:text-neutral-300">Next</a>
+            <a tw='text-xl text-neutral-400 hover:text-neutral-300'>Next</a>
           </LinkComponent>
         )}
-      </div>
+      </div> */}
     </Container>
   )
 }

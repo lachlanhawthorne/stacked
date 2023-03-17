@@ -1,7 +1,7 @@
-import tw, { css } from "twin.macro";
+import tw from "twin.macro";
+import { useStore } from '@nanostores/react'
+import { LinkComponentProxy } from 'app/src/stores/components'
 import type { CmsAppRouterOutputs } from "cms/trpc/routes/index"
-
-// import ActiveLink from "./ActiveLink"
 
 const Container = tw.div`
   flex
@@ -12,6 +12,7 @@ const Container = tw.div`
   max-w-3xl
   border-bottom[1px solid]
   border-neutral-800
+  bg-red-600
 `
 
 const Heading = tw.div`
@@ -38,21 +39,20 @@ const Navigation = tw.nav`
 export type HeaderProps = {
   title?: string;
   repoUrl?: string;
-  pages?: CmsAppRouterOutputs['pages']['paths']
-  linkComponent: React.ComponentType<any>
+  pagePaths?: CmsAppRouterOutputs['pages']['paths']
 }
 
-export function Header({ title, pages, linkComponent : LinkComponent }: HeaderProps) {
+export function Header({ title, pagePaths }: HeaderProps) {
+  const linkComponentProxy = useStore(LinkComponentProxy)
+  const LinkComponent = linkComponentProxy.component
+
   return (
     <Container>
       <Heading>
-        <LinkComponent to="/">
+        <LinkComponent to={"/"} href={"/"}>
           {title}
         </LinkComponent>
       </Heading>
-
-
-      {/* <Heading>{title}</Heading> */}
 
       <Navigation>
         {[
@@ -64,8 +64,9 @@ export function Header({ title, pages, linkComponent : LinkComponent }: HeaderPr
             title: "Posts",
             href: "/posts"
           }
-        ].map(({title, href}, i) => (
+        ]?.map(({title, href}, i) => (
             <LinkComponent
+              key={`header-page-link-${i}`}
               styles={tw`
                 text-lg
                 cursor-pointer
@@ -78,6 +79,7 @@ export function Header({ title, pages, linkComponent : LinkComponent }: HeaderPr
               hoverStyles={tw`bg-neutral-800 border-white`}
               activeStyles={tw`border-white`}
               to={href}
+              href={href}
             >
                 {title}
             </LinkComponent>
@@ -85,9 +87,10 @@ export function Header({ title, pages, linkComponent : LinkComponent }: HeaderPr
         )}
         
         {
-          pages?.map(({ slug, title }, i) => {
+          pagePaths && pagePaths?.map(({ slug, title }, i) => {
             return (
               <LinkComponent
+              key={`header-link-${i}`}
               styles={tw`
                 text-lg
                 cursor-pointer
@@ -100,6 +103,7 @@ export function Header({ title, pages, linkComponent : LinkComponent }: HeaderPr
               hoverStyles={tw`bg-neutral-800 border-white`}
               activeStyles={tw`border-white`}
               to={`/${slug}`}
+              href={`/${slug}`}
             >
                 {title}
             </LinkComponent>
@@ -110,3 +114,4 @@ export function Header({ title, pages, linkComponent : LinkComponent }: HeaderPr
     </Container>
   )
 }
+

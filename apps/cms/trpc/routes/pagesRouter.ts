@@ -9,7 +9,7 @@ const gql = String.raw as any
 export const pagesRouter = t.router({
   published: t.procedure.query(async ({ ctx }) => {
     const data = (await ctx.keystoneCtx.prisma.page.findMany({}))
-    return data.map((page) => {
+    return data?.map((page) => {
       return {
         ...page,
         preview: JSON.parse(page.content)[0] 
@@ -21,7 +21,7 @@ export const pagesRouter = t.router({
 
   paths: t.procedure.query(async ({ ctx }) => {
     const data = (await ctx.keystoneCtx.prisma.page.findMany({}))
-    return data.map((page) => {
+    return data?.map((page) => {
       return {
         title: page.title,
         slug: page.slug
@@ -56,7 +56,10 @@ export const pagesRouter = t.router({
 
       return {
         ...data,
-        content: JSON.stringify(contentData.page.content.document)
+        content: 
+        contentData?.page?.content?.document
+          ? JSON.stringify(contentData.page.content.document)
+          : null
       };
     }),
 

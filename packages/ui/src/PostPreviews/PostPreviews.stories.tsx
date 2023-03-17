@@ -1,7 +1,10 @@
 import { PostPreviews } from "./PostPreviews";
 
 export const PrimaryPostPreviews = () => (
-  <PostPreviews posts={[]}/>
+  <PostPreviews posts={[]} pagination={{
+    currentPage: 1,
+    totalPages: 1,
+  }} />
 );
 
 const PostPreviewsProps = {
