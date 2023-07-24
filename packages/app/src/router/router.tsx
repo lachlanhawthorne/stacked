@@ -10,6 +10,9 @@ export interface RouterContext {
 export const router = new ReactRouter({
   routeTree,
   context: { loaderClient },
+  onRouteChange: () => {
+    console.log('route changed')
+  },
 })
 
 declare module '@tanstack/react-router' {

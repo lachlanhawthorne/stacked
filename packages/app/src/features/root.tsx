@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { client, trpc } from "../utils/trpc";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { useRouterContext } from "@tanstack/react-router"
 import { httpBatchLink } from "@trpc/client";
 
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { Header, Footer } from "ui"
+import { Header, Footer, NProgress } from "ui"
 
-// import { useStore } from '@nanostores/react'
 import { LinkComponentProxy } from 'app/src/stores/components'
 
 const queryClient = new QueryClient();
@@ -16,7 +16,15 @@ export function AppContainer({ children, pagePaths, linkComponent }: any) {
   //   loaderClient.hydrate(props.dehydratedLoaderClient)
   //   router.hydrate(props.dehydratedRouter)
   // })
-  // LinkComponentProxy.set({ component: linkComponent })
+  const [state, setState] = useState({
+    lastUpdated: 0,
+    isRouteChanging: false,
+    loadingKey: 0,
+  })
+  
+  useEffect(() => {
+    LinkComponentProxy.set({ component: linkComponent })
+  }, [])
 
   const [trpcClient] = useState(() =>
     trpc.createClient({
@@ -31,6 +39,7 @@ export function AppContainer({ children, pagePaths, linkComponent }: any) {
   return (
       <trpc.Provider client={trpcClient} queryClient={queryClient}>
         <QueryClientProvider client={queryClient}>
+          <NProgress />
           <Header 
             title="Keystone, tRPC, Tailwind, TanStack Blog"
             pagePaths={pagePaths}

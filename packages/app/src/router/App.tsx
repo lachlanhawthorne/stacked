@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect} from "react";
 import { trpc } from "../utils/trpc";
 import { LoaderClientProvider } from '@tanstack/react-loaders'
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -13,10 +13,11 @@ export function App(props: {
   dehydratedRouter: ReturnType<typeof router.dehydrate>
   dehydratedLoaderClient: ReturnType<typeof loaderClient.dehydrate>
 }) {
-  useState(() => {
+  useEffect(() => {
     loaderClient.hydrate(props.dehydratedLoaderClient)
     router.hydrate(props.dehydratedRouter)
-  })
+  }, [])
+
 
   const [trpcClient] = useState(() =>
     trpc.createClient({
@@ -29,13 +30,13 @@ export function App(props: {
   );
 
   return (
-      <trpc.Provider client={trpcClient} queryClient={queryClient}>
-        <QueryClientProvider client={queryClient}>
-          <LoaderClientProvider loaderClient={loaderClient}>
-            <RouterProvider router={router} />
-          </LoaderClientProvider>
-        </QueryClientProvider>
-      </trpc.Provider>
+    <trpc.Provider client={trpcClient} queryClient={queryClient}>
+      <QueryClientProvider client={queryClient}>
+        <LoaderClientProvider loaderClient={loaderClient}>
+          <RouterProvider router={router} />
+        </LoaderClientProvider>
+      </QueryClientProvider>
+    </trpc.Provider>
   );
 }
 

@@ -12,7 +12,6 @@ const Container = tw.div`
   max-w-3xl
   border-bottom[1px solid]
   border-neutral-800
-  bg-red-600
 `
 
 const Heading = tw.div`

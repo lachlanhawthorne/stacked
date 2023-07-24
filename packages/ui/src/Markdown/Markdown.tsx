@@ -6,7 +6,7 @@ const MarkdownContainer = tw.div`
   space-y-6
 `
 
-export const Markdown = ({ content, linkComponent : LinkComponent }: any) => {
+export const Markdown = ({ content }: any) => {
   return (
     <MarkdownContainer>
       <MarkedReact
@@ -41,10 +41,11 @@ export const Markdown = ({ content, linkComponent : LinkComponent }: any) => {
           },
           code(code, language) {
             return (
-              <CodeBlock 
-                language={language}
-                code={code}
-              />
+              // <CodeBlock 
+              //   language={language}
+              //   code={code}
+              // />
+              <span></span>
             )
           },
           codespan(code, lang) {

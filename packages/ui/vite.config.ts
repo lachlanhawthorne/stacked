@@ -16,7 +16,7 @@ export default defineConfig({
     emptyOutDir: false,
     lib: {
       entry: path.resolve(__dirname, "src/index.tsx"),
-      formats: ["es"],
+      formats: ["es", "cjs"],
     },
     rollupOptions: {
       external: isExternal,

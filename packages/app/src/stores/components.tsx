@@ -1,4 +1,4 @@
-import { atom } from 'nanostores'
+import { atom, onSet, } from 'nanostores'
 
 export const LinkComponentProxy = atom<any>({
   component: ({ children, to, styles, hoverStyles, activeStyles, active, ...props }: any) => (
@@ -14,4 +14,8 @@ export const LinkComponentProxy = atom<any>({
   )
 })
 
+onSet(LinkComponentProxy, ({ newValue, abort }) => {
+  console.log('LinkComponentProxy onSet')
+  console.log('newValue', newValue)
+})
 

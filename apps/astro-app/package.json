@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "dev:all": "concurrently 'npm:dev:*'",
-    "dev": "astro dev",
+    "dev": "astro dev --port=3001",
     "dev:tsr": "tsr watch",
     "start": "npm run dev",
     "build": "tsr build && astro build",
@@ -21,18 +21,18 @@
     "@tanstack/react-router": "0.0.1-beta.62",
     "@tanstack/react-router-devtools": "0.0.1-beta.62",
     "@tanstack/router": "0.0.1-beta.62",
-    "app": "*",
-    "astro": "^2.0.2",
+    "app": "workspace:*",
+    "astro": "^2.9.1",
     "concurrently": "^7.6.0",
     "nanostores": "^0.7.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-syntax-highlighter": "^15.5.0",
-    "ui": "*"
+    "ui": "workspace:*"
   },
   "devDependencies": {
     "@types/react": "^18.0.26",
     "@types/react-dom": "^18.0.9",
-    "typescript": "*"
+    "typescript": "^5.1.6"
   }
 }

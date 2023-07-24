@@ -4,7 +4,7 @@ const samplePost = {
   id: '1',
   title: "My first post",
   content: "This is my first post",
-  publishDate: "2021-01-01",
+  publishDate: new Date("2021-01-01"),
   status: 'published',
   views: 200,
   authorId: '1',

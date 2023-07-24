@@ -111,3 +111,21 @@ declare module 'twin.macro' {
   const styled: StyledTags & typeof stitchesStyled;
   const css: typeof cssImport;
 }
+
+// For the css and styled imports
+declare module 'twin.macro' {
+  const css: typeof cssProperty;
+  const styled: typeof styledComponent;
+}
+
+// For the css prop
+declare module 'react' {
+  interface HTMLAttributes<T> extends DOMAttributes<T> {
+    css?: CSSProp;
+  }
+}
+
+// For styling on svg elements
+interface SVGProps<T> extends SVGAttributes<T> {
+  css?: CSSProp
+}
